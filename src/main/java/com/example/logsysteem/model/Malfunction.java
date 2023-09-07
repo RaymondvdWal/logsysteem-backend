@@ -14,19 +14,19 @@ import java.time.LocalDateTime;
 @Table(name= "malfunctions")
 public class Malfunction {
 
-    @Id
-    @GeneratedValue
-    Long id;
-    String solution;
-    String description;
-    String action;
-    Status status;
-    Urgency urgency;
-    LocalDateTime createMalfunction;
-    LocalDateTime updateMalfunction;
-    String creator;
-    String updatedBy;
-    String title;
+   @Id
+   @GeneratedValue
+   private Long id;
+   private String solution;
+   private String description;
+   private String action;
+   private Status status;
+   private Urgency urgency;
+   private LocalDateTime createMalfunction;
+   private LocalDateTime updateMalfunction;
+   private String creator;
+   private String updatedBy;
+   private String title;
 
     @ManyToOne
     @JoinColumn(name = "workstation_id")

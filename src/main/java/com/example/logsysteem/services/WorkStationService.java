@@ -34,7 +34,7 @@ public class WorkStationService {
 
         List<WorkStation> workStations = workstationRepository.findAll();
 
-        if (workStations.size() == 0) {
+        if (workStations.isEmpty()) {
             throw new RecordNotFoundException("No workstations found");
         }
 
@@ -57,7 +57,7 @@ public class WorkStationService {
         WorkStation workStation = optionalWorkStation.get();
         WorkStationDto workStationDto = transferModelToDTO(workStation);
 
-        if (workStation.getUsers().size() > 0) {
+        if (!workStation.getUsers().isEmpty()) {
             int lastUserIndex = workStation.getUsers().size() - 1;
             workStationDto.setUser(workStation.getUsers().get(lastUserIndex));
         }
@@ -106,7 +106,7 @@ public class WorkStationService {
         List<Operation> operationsAssignedToWorkstation = workStation.getOperations();
         List<User> usersAssignedToWorkStations = workStation.getUsers();
 
-        if (malfunctionsAssignedToWorkstation.size() > 0 || operationsAssignedToWorkstation.size() > 0 || usersAssignedToWorkStations.size() > 0){
+        if (!malfunctionsAssignedToWorkstation.isEmpty() || !operationsAssignedToWorkstation.isEmpty() || !usersAssignedToWorkStations.isEmpty()){
             throw new ActionNotPossibleException("Cannot delete a workstation which have operations, malfunctions or users assigned");
         }
 

@@ -38,7 +38,7 @@ public class OperationService {
 
         List<Operation> operations = operationRepository.findAll();
 
-        if (operations.size() == 0) {
+        if (operations.isEmpty()) {
             throw new RecordNotFoundException("No operations found");
         }
 

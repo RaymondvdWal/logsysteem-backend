@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/user")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "USER");
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/admin")
-    public ResponseEntity<UserDto> createAdmin(@RequestBody UserDto dto) {;
+    public ResponseEntity<UserDto> createAdmin(@RequestBody UserDto dto) {
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ADMIN");
@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/moderator")
-    public ResponseEntity<UserDto> createModerator(@RequestBody UserDto dto) {;
+    public ResponseEntity<UserDto> createModerator(@RequestBody UserDto dto) {
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "MODERATOR");

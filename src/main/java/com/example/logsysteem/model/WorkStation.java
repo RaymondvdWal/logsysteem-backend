@@ -20,11 +20,11 @@ public class WorkStation {
 
     @Id
     @GeneratedValue
-    public Long id;
-    public String name;
-    public String pushMessage;
-    public String generalMessage;
-    public Location location;
+    private Long id;
+    private String name;
+    private String pushMessage;
+    private String generalMessage;
+    private Location location;
 
     @ManyToMany(mappedBy = "workStations")
     @JsonIgnore

@@ -30,13 +30,9 @@ public class UserDto {
     public WorkStation workStation;
     public ProfilePicture profilePicture;
 
+    @Getter
     @JsonSerialize
     public Set<Authority> authorities;
-
-
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;

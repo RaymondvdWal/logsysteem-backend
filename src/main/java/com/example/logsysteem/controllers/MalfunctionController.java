@@ -3,7 +3,6 @@ package com.example.logsysteem.controllers;
 
 import com.example.logsysteem.dtos.MalfunctionDto;
 import com.example.logsysteem.services.MalfunctionService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class MalfunctionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MalfunctionDto>  updateMalfunction(@PathVariable("id") Long id, @Valid @RequestBody MalfunctionDto malfunctionDto) {
+    public ResponseEntity<MalfunctionDto>  updateMalfunction(@PathVariable("id") Long id, @RequestBody MalfunctionDto malfunctionDto) {
         malfunctionService.updateMalfunction(id, malfunctionDto);
         return ResponseEntity.ok().body(malfunctionDto);
     }

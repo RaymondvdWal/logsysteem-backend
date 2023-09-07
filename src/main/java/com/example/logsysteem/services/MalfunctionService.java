@@ -37,7 +37,7 @@ public class MalfunctionService {
 
         List<Malfunction> malfunctions = malfunctionRepository.findAll();
 
-        if (malfunctions.size() == 0) {
+        if (malfunctions.isEmpty()) {
             throw new RecordNotFoundException("No malfunctions found");
         }
 

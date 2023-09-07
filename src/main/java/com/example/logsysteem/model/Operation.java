@@ -17,18 +17,18 @@ public class Operation {
 
     @Id
     @GeneratedValue
-    public Long id;
-    public Date dateIndication;
-    public LocalTime timeIndication;
-    public String instruction;
-    public String comment;
-    public Status status;
-    public LocalDateTime operationPickedUp;
-    public LocalDateTime operationDone;
-    public String name;
-    public String device;
-    public String pickedUpBy;
-    public String finishedBy;
+    private Long id;
+    private Date dateIndication;
+    private LocalTime timeIndication;
+    private String instruction;
+    private String comment;
+    private Status status;
+    private LocalDateTime operationPickedUp;
+    private LocalDateTime operationDone;
+    private String name;
+    private String device;
+    private String pickedUpBy;
+    private String finishedBy;
 
     @ManyToOne
     @JoinColumn(name="workstation_id")
