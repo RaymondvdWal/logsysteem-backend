@@ -51,6 +51,4 @@ public class OperationController {
     public ResponseEntity<String> assignOperationToWorkstation(@PathVariable Long id, @PathVariable Long workstation_id) {
         return ResponseEntity.ok(operationService.assignOperationToWorkStation(id, workstation_id));
     }
-
-
 }

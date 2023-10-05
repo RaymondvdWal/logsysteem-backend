@@ -20,12 +20,10 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
-    @Getter
     @Id
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Getter
     @Column(nullable = false, length = 255)
     private String password;
 
@@ -33,19 +31,15 @@ public class User {
 
     private String lastname;
 
-    @Getter
     @Column(nullable = false)
     private boolean enabled = true;
 
-    @Getter
     @Column
     private String apikey;
 
-    @Getter
     @Column
     private String email;
 
-    @Getter
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
