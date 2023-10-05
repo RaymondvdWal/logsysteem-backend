@@ -30,7 +30,7 @@ public class OperationController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<OperationDto> createOperation(@RequestBody OperationDto operation) {
+    public ResponseEntity<OperationDto> createOperation(@Valid @RequestBody OperationDto operation) {
         OperationDto newOperation = operationService.createOperation(operation);
         return new ResponseEntity<>(newOperation, HttpStatus.CREATED);
     }

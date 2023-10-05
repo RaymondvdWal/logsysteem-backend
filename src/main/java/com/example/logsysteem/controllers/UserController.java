@@ -3,6 +3,7 @@ package com.example.logsysteem.controllers;
 import com.example.logsysteem.dtos.UserDto;
 import com.example.logsysteem.exceptions.BadRequestException;
 import com.example.logsysteem.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -65,7 +66,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/moderator")
-    public ResponseEntity<UserDto> createModerator(@RequestBody UserDto dto) {
+    public ResponseEntity<UserDto> createModerator(@Valid @RequestBody UserDto dto) {
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "MODERATOR");
@@ -77,7 +78,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{username}")
-    public ResponseEntity<UserDto> updateKlant(@PathVariable("username") String username, @RequestBody UserDto dto) {
+    public ResponseEntity<UserDto> updateKlant(@PathVariable("username") String username, @Valid @RequestBody UserDto dto) {
 
         userService.updateUser(username, dto);
 

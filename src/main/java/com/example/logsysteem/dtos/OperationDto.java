@@ -2,7 +2,6 @@ package com.example.logsysteem.dtos;
 
 import com.example.logsysteem.enums.Status;
 import com.example.logsysteem.model.WorkStation;
-import jakarta.persistence.GeneratedValue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,9 +16,7 @@ import java.util.Date;
 @Setter
 public class OperationDto {
 
-    @GeneratedValue
     public Long id;
-
     public Date dateIndication;
     public LocalTime timeIndication;
     @NotBlank

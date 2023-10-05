@@ -70,6 +70,11 @@ class MalfunctionControllerTest {
         malfunctionDto1 = new MalfunctionDto();
         malfunctionDto1.setId(1L);
         malfunctionDto1.setDescription("helemaal stuk");
+        malfunctionDto1.setSolution("nieuwe knop installeren");
+        malfunctionDto1.setAction("rechts");
+        malfunctionDto1.setStatus(Status.ONGEDAAN);
+        malfunctionDto1.setUrgency(Urgency.HOOG);
+        malfunctionDto1.setTitle("doen");
         malfunctionDto2 = new MalfunctionDto();
         malfunctionDto2.setId(2L);
         malfunctionDto2.setDescription("weer gemaakt");
@@ -77,6 +82,7 @@ class MalfunctionControllerTest {
         malfunctionDto2.setAction("links");
         malfunctionDto2.setStatus(Status.BEZIG);
         malfunctionDto2.setUrgency(Urgency.LAAG);
+        malfunctionDto2.setTitle("doen");
     }
 
     @Test

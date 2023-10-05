@@ -32,7 +32,7 @@ public class WorkStationController {
 
 
     @PostMapping("/new")
-    public ResponseEntity<WorkStationDto> createWorkStations(@RequestBody WorkStationDto workStation) {
+    public ResponseEntity<WorkStationDto> createWorkStations(@Valid @RequestBody WorkStationDto workStation) {
         WorkStationDto newWorkStation = workStationService.createWorkStation(workStation);
         return new ResponseEntity<>(newWorkStation, HttpStatus.CREATED);
     }

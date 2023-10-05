@@ -15,7 +15,6 @@ import java.util.Set;
 @Setter
 public class UserDto {
 
-    @NotBlank
     public String username;
     @NotBlank @Length(min = 10)
     public String password;
