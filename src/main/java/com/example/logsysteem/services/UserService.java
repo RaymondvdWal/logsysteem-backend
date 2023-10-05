@@ -31,7 +31,6 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     public UserService(UserRepository userRepository, ProfilePictureRepository profilePictureRepository) {
         this.userRepository = userRepository;
-
         this.profilePictureRepository = profilePictureRepository;
     }
 
@@ -74,7 +73,12 @@ public class UserService {
     public void updateUser(String username, UserDto newUser) {
         if (!userRepository.existsById(username)) throw new UserNotFoundException(username);
         User user = userRepository.findById(username).get();
-        user.setPassword(newUser.getPassword());
+        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        user.setEnabled(newUser.getEnabled());
+        user.setFirstname(newUser.getFirstname());
+        user.setLastname(newUser.getLastname());
+        user.setEmail(newUser.getEmail());
+        user.setApikey(newUser.getApikey());
         userRepository.save(user);
     }
 
