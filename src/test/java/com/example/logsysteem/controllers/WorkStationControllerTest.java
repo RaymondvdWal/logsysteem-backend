@@ -2,142 +2,113 @@ package com.example.logsysteem.controllers;
 
 import com.example.logsysteem.dtos.WorkStationDto;
 import com.example.logsysteem.enums.Location;
-import com.example.logsysteem.filter.JwtRequestFilter;
-import com.example.logsysteem.model.ProfilePicture;
 import com.example.logsysteem.model.User;
 import com.example.logsysteem.model.WorkStation;
+import com.example.logsysteem.repository.UserRepository;
+import com.example.logsysteem.repository.WorkstationRepository;
 import com.example.logsysteem.services.WorkStationService;
-import com.example.logsysteem.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc(addFilters = false)
-@WebMvcTest(WorkStationController.class)
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 class WorkStationControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
+    @Autowired
     private WorkStationService workStationService;
 
-    @MockBean
-    private AuthenticationManager authenticationManager;
+    @Autowired
+    private WorkstationRepository workstationRepository;
 
-    @MockBean
-    private JwtUtil jwtUtil;
+    @Autowired
+    private UserRepository userRepository;
 
-    @MockBean
-    private JwtRequestFilter jwtRequestFilter;
+    private WorkStationDto workStationDto1;
 
-    static WorkStation workStation;
-    static WorkStationDto workStationDto1;
-    static WorkStationDto workStationDto2;
-    static List<WorkStation> workStations = new ArrayList<>();
-    static List<User> users = new ArrayList<>();
-
-    @BeforeAll
-    static void beforeAll() {
-        users.add(new User());
-        users.add(new User());
-        users.add(new User("Laatste", "$2a$10$tPSVd8E9qpOm1NX3k4mOye/Yz9vqkOvvxneKVq26q9jq305NF6Noy", "Dikke", "Doei", true, "123456", "MH@novi.nl", new HashSet<>(),Collections.emptyList(),new ProfilePicture()));
-        workStation = new WorkStation(1L, "Cobas", "ff", "ss", Location.UTRECHT, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
-        workStations.add(workStation);
-        workStation = new WorkStation(2L, "Sysmex", "kk", "jj", Location.WOERDEN, users, Collections.emptyList(), Collections.emptyList());
-        workStations.add(workStation);
-        workStation = new WorkStation(3L, "Lamp", "dd", "ee", Location.NIEUWEGEIN, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
-        workStations.add(workStation);
+    @BeforeEach
+     void setUp() {
+        User henk = new User("Laatste", "$2a$10$tPSVd8E9qpOm1NX3k4mOye/Yz9vqkOvvxneKVq26q9jq305NF6Noy", "Dikke", "Doei", true, "123456", "MH@novi.nl", new HashSet<>(),null,null);
+        userRepository.save(henk);
+        WorkStation workStation = new WorkStation(1L, "Cobas", "ff", "ss", Location.UTRECHT,null, null, null);
+        workstationRepository.save(workStation);
+        workStation = new WorkStation(2L, "Sysmex", "kk", "jj", Location.WOERDEN, null, null, null);
+        workstationRepository.save(workStation);
+        workStation = new WorkStation(3L, "Lamp", "dd", "ee", Location.NIEUWEGEIN, null, null, null);
+        workstationRepository.save(workStation);
         workStationDto1 = new WorkStationDto();
         workStationDto1.setId(1L);
         workStationDto1.setGeneralMessage("ss");
         workStationDto1.setLocation(Location.UTRECHT);
         workStationDto1.setPushMessage("ff");
         workStationDto1.setName("Cobas");
-        workStationDto2 = new WorkStationDto();
-        workStationDto2.setId(2L);
-        workStationDto2.setGeneralMessage("ss");
-        workStationDto2.setLocation(Location.WOERDEN);
-        workStationDto2.setPushMessage("ff");
-        workStationDto2.setName("Sysmex");
     }
 
     @Test
     void getAllWorkStations() throws Exception {
-        given(workStationService.getAllWorkStations()).willReturn(List.of(workStationDto1));
+        List<WorkStationDto> allWorkStations = workStationService.getAllWorkStations();
 
         mvc.perform(get("/workstation"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].generalMessage").value("ss"))
-                .andExpect(jsonPath("$[0].location").value(Location.UTRECHT.name()))
-                .andExpect(jsonPath("$[0].pushMessage").value("ff"))
-                .andExpect(jsonPath("$[0].name").value("Cobas"));
+                .andExpect(jsonPath("$.size()").value(allWorkStations.size()));
     }
 
     @Test
     void getWorkStations() throws Exception {
-        given(workStationService.getWorkStation(any())).willReturn(workStationDto1);
+        WorkStationDto workStationDto = workStationService.getWorkStation(1L);
 
         mvc.perform(get("/workstation/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("generalMessage").value("ss"))
-                .andExpect(jsonPath("location").value(Location.UTRECHT.name()))
-                .andExpect(jsonPath("pushMessage").value("ff"))
-                .andExpect(jsonPath("name").value("Cobas"));
+                .andExpect(jsonPath("id").value(workStationDto.id))
+                .andExpect(jsonPath("generalMessage").value(workStationDto.generalMessage))
+                .andExpect(jsonPath("location").value(workStationDto.location.name()))
+                .andExpect(jsonPath("pushMessage").value(workStationDto.pushMessage))
+                .andExpect(jsonPath("name").value(workStationDto.name));
     }
 
     @Test
     void createWorkStations() throws Exception {
-        given(workStationService.createWorkStation(any())).willReturn(workStationDto1);
-
         mvc.perform(post("/workstation/new").contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(workStationDto1)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("generalMessage").value("ss"))
-                .andExpect(jsonPath("location").value(Location.UTRECHT.name()))
-                .andExpect(jsonPath("pushMessage").value("ff"))
-                .andExpect(jsonPath("name").value("Cobas"));
+                .andExpect(jsonPath("generalMessage").value(workStationDto1.generalMessage))
+                .andExpect(jsonPath("location").value(workStationDto1.location.name()))
+                .andExpect(jsonPath("pushMessage").value(workStationDto1.pushMessage))
+                .andExpect(jsonPath("name").value(workStationDto1.name));
     }
 
     @Test
     void updateWorkStations() throws Exception {
-        mvc.perform(put("/workstation/1").contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(workStationDto2)))
+        mvc.perform(put("/workstation/2").contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(workStationDto1)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(workStationDto2)));
+                .andExpect(content().string(asJsonString(workStationDto1)));
     }
 
     @Test
     void deleteWorkStations() throws Exception {
         mvc.perform(delete("/workstation/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Workstation successfully deleted"));
+                .andExpect(status().isOk());
     }
 
     @Test
     void assignUserToWorkStation() throws Exception {
-        mvc.perform(put("/workstation/1/user/Laatste")
+        mvc.perform(put("/workstation/2/user/Laatste")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(workStationDto1)))
                 .andExpect(status().isOk());

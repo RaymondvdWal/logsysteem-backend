@@ -26,7 +26,10 @@ public class WorkStation {
     private String generalMessage;
     private Location location;
 
-    @ManyToMany(mappedBy = "workStations")
+    @ManyToMany(
+            mappedBy = "workStations",
+            fetch = FetchType.EAGER
+    )
     @JsonIgnore
     private List<User> users;
 
