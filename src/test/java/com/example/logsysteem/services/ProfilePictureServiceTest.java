@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,9 +56,9 @@ class ProfilePictureServiceTest {
     void getProfilePicture() {
         when(profilePictureRepository.findById(1L)).thenReturn(Optional.of(profilePicture));
         ProfilePictureDto profilePictureDto = profilePictureService.getProfilePicture(1L);
-        assert(profilePictureDto.getFilename().equals("test"));
-        assert(profilePictureDto.getId().equals(1L));
-        assert(Arrays.equals(profilePictureDto.getProfilePicture(), testByte));
+        assertEquals(profilePictureDto.getFilename(),"test");
+        assertEquals(profilePictureDto.getId(),1L);
+        assertEquals(profilePictureDto.getProfilePicture(), testByte);
     }
 
     @Test

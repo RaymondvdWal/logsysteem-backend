@@ -66,7 +66,7 @@ class WorkStationServiceTest {
     // when
         List<WorkStationDto> allWorkStations = workStationService.getAllWorkStations();
     // then
-        assert(allWorkStations.size() == 3);
+        assertEquals(allWorkStations.size(),3);
     }
 
     @Test
@@ -84,8 +84,8 @@ class WorkStationServiceTest {
         // when
         WorkStationDto workStationDto = workStationService.getWorkStation(2L);
         // then
-        assert(workStationDto.getId().equals(2L));
-        assert(workStationDto.getUser().getUsername().equals("Laatste"));
+        assertEquals(workStationDto.getId(),2L);
+        assertEquals(workStationDto.getUser().getUsername(),"Laatste");
     }
 
     @Test
@@ -95,7 +95,7 @@ class WorkStationServiceTest {
         // when
         WorkStationDto workStationDto = workStationService.getWorkStation(1L);
         // then
-        assert(workStationDto.getId().equals(1L));
+        assertEquals(workStationDto.getId(),1L);
         assertNull(workStationDto.getUser());
     }
 

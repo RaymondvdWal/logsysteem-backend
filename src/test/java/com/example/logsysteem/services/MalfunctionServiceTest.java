@@ -98,7 +98,7 @@ class MalfunctionServiceTest {
     void getAllMalfunctions() {
         when(malfunctionRepository.findAll()).thenReturn(malfunctions);
         List<MalfunctionDto> allMalfunctions = malfunctionService.getAllMalfunctions();
-        assert(allMalfunctions.size() == 3);
+        assertEquals(allMalfunctions.size(), 3);
     }
 
     @Test
@@ -111,7 +111,7 @@ class MalfunctionServiceTest {
     void getMalfunction() {
         when(malfunctionRepository.findById(any())).thenReturn(Optional.ofNullable(malfunctions.get(0)));
         MalfunctionDto malfunctionDto = malfunctionService.getMalfunction(1L);
-        assert(malfunctionDto.getId().equals(1L));
+        assertEquals(malfunctionDto.getId(),1L);
     }
 
     @Test
