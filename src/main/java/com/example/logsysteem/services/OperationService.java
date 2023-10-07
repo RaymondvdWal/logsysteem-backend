@@ -30,12 +30,9 @@ public class OperationService {
         this.workStationRepository = workStationRepository;
     }
 
-    List<OperationDto> operationDtoList = new ArrayList<>();
-
-
-
     public List<OperationDto> getAllOperations() throws RecordNotFoundException {
 
+        List<OperationDto> operationDtoList = new ArrayList<>();
         List<Operation> operations = operationRepository.findAll();
 
         if (operations.isEmpty()) {
@@ -48,7 +45,6 @@ public class OperationService {
 
         return operationDtoList;
     }
-
 
     public OperationDto getOperation(Long id) throws RecordNotFoundException{
 
@@ -63,7 +59,6 @@ public class OperationService {
         return transferModelToDTO(operation);
     }
 
-
     public OperationDto createOperation(OperationDto operationDto) {
         Operation operation = transferDtoToModel(operationDto);
 
@@ -71,7 +66,6 @@ public class OperationService {
 
         return transferModelToDTO(operation);
     }
-
 
     public void updateOperation(Long id, @RequestBody OperationDto operationDto ) throws RecordNotFoundException {
 
@@ -121,7 +115,6 @@ public class OperationService {
 
     }
 
-
     public void deleteOperation(Long id) throws RecordNotFoundException {
 
         Operation operation = operationRepository.findById(id).orElseThrow(
@@ -131,7 +124,6 @@ public class OperationService {
         operationRepository.delete(operation);
 
     }
-
 
     public String assignOperationToWorkStation(Long id, Long WorkStation_id) throws  RecordNotFoundException {
         Optional<Operation> optionalOperation = operationRepository.findById(id);
@@ -148,7 +140,6 @@ public class OperationService {
         return  "Operation with id:"+id+" assigned to workstations with id:"+WorkStation_id;
     }
 
-
     public OperationDto transferModelToDTO(Operation operation) {
         OperationDto operationDto = new OperationDto();
         operation.setWorkStation(operation.getWorkStation());
@@ -161,5 +152,4 @@ public class OperationService {
         BeanUtils.copyProperties(operationDto, operation);
         return operation;
     }
-
 }

@@ -29,12 +29,9 @@ public class MalfunctionService {
         this.workStationRepository = workStationRepository;
     }
 
-    List<MalfunctionDto> malfunctionDtoList = new ArrayList<>();
-
-
-
     public List<MalfunctionDto> getAllMalfunctions() throws RecordNotFoundException {
 
+        List<MalfunctionDto> malfunctionDtoList = new ArrayList<>();
         List<Malfunction> malfunctions = malfunctionRepository.findAll();
 
         if (malfunctions.isEmpty()) {
@@ -48,7 +45,6 @@ public class MalfunctionService {
         return malfunctionDtoList;
     }
 
-
     public MalfunctionDto getMalfunction(Long id) throws RecordNotFoundException{
 
         Optional<Malfunction> optionalMalfunction = malfunctionRepository.findById(id);
@@ -61,7 +57,6 @@ public class MalfunctionService {
 
         return transferModelToDTO(malfunction);
     }
-
 
     public MalfunctionDto createMalfunction(MalfunctionDto malfunctionDto) {
         Malfunction malfunction = transferDtoToModel(malfunctionDto);
@@ -77,7 +72,6 @@ public class MalfunctionService {
 
         return transferModelToDTO(malfunction);
     }
-
 
     public void updateMalfunction(Long id, @RequestBody MalfunctionDto malfunctionDto ) throws RecordNotFoundException {
 
@@ -102,7 +96,6 @@ public class MalfunctionService {
 
     }
 
-
     public void deleteMalfunction(Long id) throws RecordNotFoundException {
 
         Malfunction malfunction = malfunctionRepository.findById(id).orElseThrow(
@@ -112,7 +105,6 @@ public class MalfunctionService {
         malfunctionRepository.delete(malfunction);
 
     }
-
 
     public String assignMalfunctionToWorkStation(Long id, Long workStation_id) throws  RecordNotFoundException {
         Optional<Malfunction> optionalMalfunction = malfunctionRepository.findById(id);
@@ -128,7 +120,6 @@ public class MalfunctionService {
 
         return  "Malfunction with id:"+id+" assigned to workstations with id:"+workStation_id;
     }
-
 
     public MalfunctionDto transferModelToDTO(Malfunction malfunction) {
         MalfunctionDto malfunctionDto = new MalfunctionDto();

@@ -28,10 +28,9 @@ public class WorkStationService {
         this.userRepository = userRepository;
     }
 
-    List<WorkStationDto> workStationDtoList = new ArrayList<>();
-
     public List<WorkStationDto> getAllWorkStations() throws RecordNotFoundException {
 
+        List<WorkStationDto> workStationDtoList = new ArrayList<>();
         List<WorkStation> workStations = workstationRepository.findAll();
 
         if (workStations.isEmpty()) {
@@ -44,7 +43,6 @@ public class WorkStationService {
 
         return workStationDtoList;
     }
-
 
     public WorkStationDto getWorkStation(Long id) throws RecordNotFoundException{
 
@@ -61,11 +59,8 @@ public class WorkStationService {
             int lastUserIndex = workStation.getUsers().size() - 1;
             workStationDto.setUser(workStation.getUsers().get(lastUserIndex));
         }
-
-
         return workStationDto;
     }
-
 
     public WorkStationDto createWorkStation(WorkStationDto workStationDto) {
         WorkStation workStation = transferDtoToModel(workStationDto);
@@ -74,7 +69,6 @@ public class WorkStationService {
 
         return transferModelToDTO(workStation);
     }
-
 
     public void updateWorkstation(Long id, @RequestBody WorkStationDto workStationDto ) throws RecordNotFoundException {
 
@@ -94,7 +88,6 @@ public class WorkStationService {
         workstationRepository.save(workStation);
 
     }
-
 
     public void deleteWorkStation(Long id) throws RecordNotFoundException {
 
@@ -160,5 +153,4 @@ public class WorkStationService {
         BeanUtils.copyProperties(workStationDto, workStation);
         return workStation;
     }
-
 }
