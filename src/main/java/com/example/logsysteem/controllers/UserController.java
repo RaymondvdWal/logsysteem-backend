@@ -3,8 +3,10 @@ package com.example.logsysteem.controllers;
 import com.example.logsysteem.dtos.UserDto;
 import com.example.logsysteem.exceptions.BadRequestException;
 import com.example.logsysteem.services.UserService;
+import com.example.logsysteem.utils.FieldError;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,6 +20,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final FieldError fieldError = new FieldError();
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -42,7 +45,10 @@ public class UserController {
     }
 
     @PostMapping(value = "/user")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "USER");
@@ -54,7 +60,10 @@ public class UserController {
     }
 
     @PostMapping(value = "/admin")
-    public ResponseEntity<UserDto> createAdmin(@RequestBody UserDto dto) {
+    public ResponseEntity<Object> createAdmin(@Valid @RequestBody UserDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ADMIN");
@@ -66,7 +75,10 @@ public class UserController {
     }
 
     @PostMapping(value = "/moderator")
-    public ResponseEntity<UserDto> createModerator(@Valid @RequestBody UserDto dto) {
+    public ResponseEntity<Object> createModerator(@Valid @RequestBody UserDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "MODERATOR");
@@ -78,7 +90,10 @@ public class UserController {
     }
 
     @PutMapping(value = "/{username}")
-    public ResponseEntity<UserDto> updateKlant(@PathVariable("username") String username, @Valid @RequestBody UserDto dto) {
+    public ResponseEntity<Object> updateKlant(@PathVariable("username") String username, @Valid @RequestBody UserDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
 
         userService.updateUser(username, dto);
 

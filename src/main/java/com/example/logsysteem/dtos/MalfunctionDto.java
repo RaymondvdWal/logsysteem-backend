@@ -16,24 +16,24 @@ import java.time.LocalDateTime;
 public class MalfunctionDto {
 
     Long id;
-    @Length(max = 250)
+    @Length(max = 250, message = "max 250 karakters")
     String solution;
-    @NotBlank
-    @Length(max = 500)
+    @NotBlank(message = "voer een beschrijving in")
+    @Length(max = 500, message = "max 500 karakters")
     String description;
-    @NotBlank
-    @Length(max = 250)
+    @NotBlank(message = "voer een actie in")
+    @Length(max = 250,  message = "max 250 karakters")
     String action;
-    @NotNull
+    @NotNull(message = "selecteer een status")
     Status status;
-    @NotNull
+    @NotNull(message = "selecteer een prioriteit")
     Urgency urgency;
     LocalDateTime createMalfunction;
     LocalDateTime updateMalfunction;
     WorkStation workStation;
     String creator;
     String updatedBy;
-    @NotBlank @Length(max = 25)
+    @NotBlank @Length(max = 25, message =  "max 25 karakters")
     String title;
 
 }

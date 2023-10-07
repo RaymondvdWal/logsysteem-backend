@@ -15,15 +15,14 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 public class WorkStationDto {
 
-
     public Long id;
-    @NotBlank
+    @NotBlank (message = "voer een naam in")
     public String name;
-    @Length(max=200)
+    @Length(max=200, message = "max 200 karakters")
     public String pushMessage;
-    @Length(max=400)
+    @Length(max=400, message = "max 400 karakters")
     public String generalMessage;
-    @NotNull
+    @NotNull (message = "voer een locatie in")
     @Enumerated(EnumType.STRING)
     public Location location;
     public User user;

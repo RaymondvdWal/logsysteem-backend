@@ -3,6 +3,7 @@ package com.example.logsysteem.controllers;
 import com.example.logsysteem.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -33,4 +34,10 @@ public class ExceptionHandlerController {
     public ResponseEntity<Object> exception(UploadDownloadException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = InvalidInputException.class)
+    public ResponseEntity<Object> exception(MethodArgumentNotValidException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

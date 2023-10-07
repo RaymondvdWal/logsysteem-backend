@@ -2,10 +2,12 @@ package com.example.logsysteem.controllers;
 
 import com.example.logsysteem.dtos.OperationDto;
 import com.example.logsysteem.services.OperationService;
+import com.example.logsysteem.utils.FieldError;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +17,8 @@ import java.util.List;
 @RequestMapping("/operation")
 public class OperationController {
 
-    private OperationService operationService;
+    private final OperationService operationService;
+    private final FieldError fieldError = new FieldError();
 
     @GetMapping
     public ResponseEntity<List<OperationDto>> getAllOperations() {
@@ -30,13 +33,19 @@ public class OperationController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<OperationDto> createOperation(@Valid @RequestBody OperationDto operation) {
+    public ResponseEntity<Object> createOperation(@Valid @RequestBody OperationDto operation, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
         OperationDto newOperation = operationService.createOperation(operation);
         return new ResponseEntity<>(newOperation, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OperationDto>  updateOperation(@PathVariable("id") Long id, @Valid @RequestBody OperationDto operationDto) {
+    public ResponseEntity<Object>  updateOperation(@PathVariable("id") Long id, @Valid @RequestBody OperationDto operationDto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
         operationService.updateOperation(id, operationDto);
         return ResponseEntity.ok().body(operationDto);
     }
@@ -44,7 +53,7 @@ public class OperationController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOperation(@PathVariable("id") Long id) {
         operationService.deleteOperation(id);
-        return ResponseEntity.ok().body("Operation successfully deleted");
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/workstation/{workstation_id}")

@@ -19,17 +19,19 @@ public class OperationDto {
     public Long id;
     public Date dateIndication;
     public LocalTime timeIndication;
-    @NotBlank
+    @NotBlank(message = "Voer een instructie in")
     public String instruction;
-    @Length(max=250)
+    @Length(max=250, message = "max 250 karakters")
     public String comment;
-    @NotNull
+    @NotNull(message =  "Selecteer een status")
     public Status status;
     public LocalDateTime operationPickedUp;
     public LocalDateTime operationDone;
-    @NotBlank @Length(max = 25)
+    @NotBlank(message = "Voer een naam in")
+    @Length(max = 25, message = "max 25 karakters")
     public String name;
-    @NotBlank @Length(max = 25)
+    @NotBlank(message = "Voer een apparaat in")
+    @Length(max = 25, message = "max 25 karakters")
     public String device;
     public WorkStation workStation;
     public String pickedUpBy;

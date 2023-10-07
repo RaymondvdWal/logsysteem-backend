@@ -3,10 +3,12 @@ package com.example.logsysteem.controllers;
 
 import com.example.logsysteem.dtos.MalfunctionDto;
 import com.example.logsysteem.services.MalfunctionService;
+import com.example.logsysteem.utils.FieldError;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +18,8 @@ import java.util.List;
 @RequestMapping("/malfunction")
 public class MalfunctionController {
 
-    private MalfunctionService malfunctionService;
+    private final MalfunctionService malfunctionService;
+    private final FieldError fieldError = new FieldError();
 
     @GetMapping
     public ResponseEntity<List<MalfunctionDto>> getAllMalfunctions() {
@@ -31,13 +34,19 @@ public class MalfunctionController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<MalfunctionDto> createMalfunction(@Valid @RequestBody MalfunctionDto malfunction) {
+    public ResponseEntity<Object> createMalfunction(@Valid @RequestBody MalfunctionDto malfunction, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
         MalfunctionDto newMalfunction = malfunctionService.createMalfunction(malfunction);
         return new ResponseEntity<>(newMalfunction, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MalfunctionDto>  updateMalfunction(@PathVariable("id") Long id, @Valid @RequestBody MalfunctionDto malfunctionDto) {
+    public ResponseEntity<Object>  updateMalfunction(@PathVariable("id") Long id, @Valid @RequestBody MalfunctionDto malfunctionDto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
         malfunctionService.updateMalfunction(id, malfunctionDto);
         return ResponseEntity.ok().body(malfunctionDto);
     }
@@ -45,7 +54,7 @@ public class MalfunctionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteMalfunction(@PathVariable("id") Long id) {
         malfunctionService.deleteMalfunction(id);
-        return ResponseEntity.ok().body("Malfunction successfully deleted");
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/workstation/{workstation_id}")

@@ -3,10 +3,12 @@ package com.example.logsysteem.controllers;
 
 import com.example.logsysteem.dtos.WorkStationDto;
 import com.example.logsysteem.services.WorkStationService;
+import com.example.logsysteem.utils.FieldError;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +18,8 @@ import java.util.List;
 @RequestMapping("/workstation")
 public class WorkStationController {
 
-    private WorkStationService workStationService;
+    private final WorkStationService workStationService;
+    private final FieldError fieldError = new FieldError();
 
     @GetMapping
     public ResponseEntity<List<WorkStationDto>> getAllWorkStations() {
@@ -32,13 +35,19 @@ public class WorkStationController {
 
 
     @PostMapping("/new")
-    public ResponseEntity<WorkStationDto> createWorkStations(@Valid @RequestBody WorkStationDto workStation) {
+    public ResponseEntity<Object> createWorkStations(@Valid @RequestBody WorkStationDto workStation, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
         WorkStationDto newWorkStation = workStationService.createWorkStation(workStation);
         return new ResponseEntity<>(newWorkStation, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<WorkStationDto>  updateWorkStations(@PathVariable("id") Long id, @Valid @RequestBody WorkStationDto workStationDto) {
+    public ResponseEntity<Object>  updateWorkStations(@PathVariable("id") Long id, @Valid @RequestBody WorkStationDto workStationDto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return ResponseEntity.badRequest().body(fieldError.fieldErrorBuilder(bindingResult));
+        }
         workStationService.updateWorkstation(id, workStationDto);
         return ResponseEntity.ok().body(workStationDto);
     }
@@ -46,7 +55,7 @@ public class WorkStationController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteWorkStations(@PathVariable("id") Long id) {
         workStationService.deleteWorkStation(id);
-        return ResponseEntity.ok().body("Workstation successfully deleted");
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}/user/{username}")

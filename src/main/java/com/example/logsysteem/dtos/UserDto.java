@@ -16,20 +16,22 @@ import java.util.Set;
 public class UserDto {
 
     public String username;
-    @NotBlank @Length(min = 10)
+    @NotBlank(message =  "voer een wachtwoord in")
+    @Length(min = 10, message = "gebruik minimaal 10 karakters")
     public String password;
-    @NotBlank @Length(max = 20)
+    @NotBlank(message = "voer een voornaam in")
+    @Length(max = 20, message =  "max 20 karakters")
     public String firstname;
-    @NotBlank @Length(max = 25)
+    @NotBlank(message = "voer een achternaam in")
+    @Length(max = 25, message = "max 25 karakters")
     public String lastname;
     public Boolean enabled;
     public String apikey;
-    @NotBlank
+    @NotBlank(message = "voer een email in")
     public String email;
     public WorkStation workStation;
     public ProfilePicture profilePicture;
 
-    @Getter
     @JsonSerialize
     public Set<Authority> authorities;
 

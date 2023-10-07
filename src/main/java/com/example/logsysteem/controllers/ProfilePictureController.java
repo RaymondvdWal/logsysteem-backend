@@ -57,6 +57,6 @@ public class ProfilePictureController {
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteProfilePicture(@PathVariable("id") Long id) {
         profilePictureService.deleteProfilePicture(id);
-        return ResponseEntity.ok().body("Profile picture deleted");
+        return ResponseEntity.noContent().build();
     }
 }
